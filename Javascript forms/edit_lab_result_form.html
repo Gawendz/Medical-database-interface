@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edycja wyniku lab</title>
+</head>
+<body>
+    <h1>Edycja wyniku lab</h1>
+    <form action="edit_lab_result.php" method="post">
+        <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>"> <!-- Prawidłowe ID wyniku lab -->
+        <label for="id_pacjenta">ID Pacjenta:</label>
+        <input type="text" id="id_pacjenta" name="id_pacjenta" required><br><br>
+
+        <label for="rodzaj_badania">Rodzaj badania:</label>
+        <input type="text" id="rodzaj_badania" name="rodzaj_badania" required><br><br>
+
+        <label for="wynik">Wynik:</label>
+        <input type="text" id="wynik" name="wynik" required><br><br>
+
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required><br><br>
+
+        <input type="submit" value="Zapisz zmiany">
+    </form>
+</body>
+</html>
+

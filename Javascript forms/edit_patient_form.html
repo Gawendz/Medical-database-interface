@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edycja danych pacjenta</title>
+</head>
+<body>
+    <h1>Edycja danych pacjenta</h1>
+    <form action="edit_data.php" method="post">
+        <input type="hidden" name="id" id="id" value=""> <!-- Puste pole, zostanie wypełnione JavaScriptem -->
+        <label for="imie">Imię:</label>
+        <input type="text" id="imie" name="imie" required><br><br>
+
+        <label for="nazwisko">Nazwisko:</label>
+        <input type="text" id="nazwisko" name="nazwisko" required><br><br>
+
+        <label for="data_urodzenia">Data urodzenia:</label>
+        <input type="date" id="data_urodzenia" name="data_urodzenia" required><br><br>
+
+        <label for="adres">Adres:</label>
+        <input type="text" id="adres" name="adres" required><br><br>
+
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" required><br><br>
+
+        <input type="submit" value="Zapisz zmiany">
+    </form>
+
+    <script>
+        // Pobranie ID pacjenta z parametrów URL-a
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        // Wstawienie ID pacjenta jako wartość pola ukrytego formularza
+        document.getElementById("id").value = id;
+    </script>
+</body>
+</html>
+

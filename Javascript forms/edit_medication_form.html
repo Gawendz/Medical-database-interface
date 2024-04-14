@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edycja leku</title>
+</head>
+<body>
+    <h1>Edycja leku</h1>
+    <form action="edit_medication.php" method="post">
+        <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+
+        <label for="id_pacjenta">ID Pacjenta:</label>
+        <input type="text" id="id_pacjenta" name="id_pacjenta" required><br><br>
+
+        <label for="nazwa_leku">Nazwa leku:</label>
+        <input type="text" id="nazwa_leku" name="nazwa_leku" required><br><br>
+
+        <label for="dawkowanie">Dawkowanie:</label>
+        <input type="text" id="dawkowanie" name="dawkowanie" required><br><br>
+
+        <input type="submit" value="Zapisz zmiany">
+    </form>
+</body>
+</html>
+

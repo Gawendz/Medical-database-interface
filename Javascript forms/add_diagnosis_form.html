@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj diagnozę</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Dodaj diagnozę</h2>
+
+<form id="diagnosisForm">
+    <label for="pacjentId">ID Pacjenta:</label>
+    <input type="text" id="pacjentId" name="pacjentId">
+
+    <label for="stanZdrowia">Stan zdrowia:</label>
+    <input type="text" id="stanZdrowia" name="stanZdrowia">
+
+    <label for="data">Data:</label>
+    <input type="text" id="data" name="data">
+
+    <input type="submit" value="Dodaj diagnozę">
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#diagnosisForm').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: 'add_diagnosis.php',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Obsługa sukcesu, np. wyświetlenie komunikatu
+                    console.log('Diagnoza została dodana.');
+                },
+                error: function(xhr, status, error) {
+                    // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
+                    console.error('Wystąpił błąd podczas dodawania diagnozy:', error);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
+

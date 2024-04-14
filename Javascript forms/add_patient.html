@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj nowego pacjenta</title>
+</head>
+<body>
+    <h1>Dodaj nowego pacjenta</h1>
+    <form action="add_patient.php" method="post">
+        <label for="imie">Imię:</label>
+        <input type="text" id="imie" name="imie" required><br><br>
+
+        <label for="nazwisko">Nazwisko:</label>
+        <input type="text" id="nazwisko" name="nazwisko" required><br><br>
+
+        <label for="data_urodzenia">Data urodzenia:</label>
+        <input type="date" id="data_urodzenia" name="data_urodzenia" required><br><br>
+
+        <label for="adres">Adres:</label>
+        <input type="text" id="adres" name="adres" required><br><br>
+
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" name="telefon" required><br><br>
+
+        <input type="submit" value="Dodaj pacjenta">
+    </form>
+</body>
+</html>
+

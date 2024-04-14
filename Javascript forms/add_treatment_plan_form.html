@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj plan leczenia</title>
+</head>
+<body>
+    <h2>Dodaj plan leczenia</h2>
+    <form action="add_treatment_plan.php" method="POST">
+        <label for="id_pacjenta">ID Pacjenta:</label><br>
+        <input type="number" id="id_pacjenta" name="id_pacjenta"><br>
+        <label for="id_diagnozy">ID Diagnozy:</label><br>
+        <input type="number" id="id_diagnozy" name="id_diagnozy"><br>
+        <label for="zalecane_leczenie">Zalecane leczenie:</label><br>
+        <textarea id="zalecane_leczenie" name="zalecane_leczenie" rows="4" cols="50"></textarea><br>
+        <label for="data_rozpoczecia">Data rozpoczęcia:</label><br>
+        <input type="date" id="data_rozpoczecia" name="data_rozpoczecia"><br><br>
+        <input type="submit" value="Dodaj plan leczenia">
+    </form>
+</body>
+</html>
+

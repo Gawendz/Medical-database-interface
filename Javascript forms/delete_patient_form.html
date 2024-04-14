@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuń pacjenta</title>
+</head>
+<body>
+    <h1>Usuń pacjenta</h1>
+    <form action="delete_data.php" method="post">
+        <input type="hidden" name="table" value="Pacjenci"> <!-- Ukryte pole wskazujące, którą tabelę usuwać -->
+        <label for="id">ID pacjenta:</label>
+        <input type="text" id="id" name="id" required><br><br>
+
+        <input type="submit" value="Usuń pacjenta">
+    </form>
+</body>
+</html>
+
