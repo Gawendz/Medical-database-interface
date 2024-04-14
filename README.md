@@ -8,8 +8,8 @@ Entity relationship diagram:
 Relational diagram:
 ![diagram-export-28 03 2024-03_56_47](https://github.com/Gawendz/Medical-database-interface/assets/105167719/527a0cf4-001e-4385-bbeb-68407ec2f992)
 
-Table definitions: 
-CREATE TABLE Pacjenci (
+**Table definitions: **
+**CREATE TABLE Pacjenci** (
     id_pacjenta SERIAL PRIMARY KEY,
     imie VARCHAR(50),
     nazwisko VARCHAR(50),
@@ -19,7 +19,7 @@ CREATE TABLE Pacjenci (
     wiek int
 );
 
-CREATE TABLE Diagnozy (
+**CREATE TABLE Diagnozy** (
     id_diagnozy SERIAL PRIMARY KEY,
     id_pacjenta INTEGER REFERENCES Pacjenci(id_pacjenta),
     stan_zdrowia VARCHAR(100),
@@ -27,7 +27,7 @@ CREATE TABLE Diagnozy (
 );
 
 
-CREATE TABLE Leki (
+**CREATE TABLE Leki** (
     id_leku SERIAL PRIMARY KEY,
     id_pacjenta INTEGER REFERENCES Pacjenci(id_pacjenta),
     nazwa_leku VARCHAR(50),
@@ -35,7 +35,7 @@ CREATE TABLE Leki (
 );
 
 
-CREATE TABLE Wyniki_lab (
+**CREATE TABLE Wyniki_lab** (
     id_wyniku SERIAL PRIMARY KEY,
     id_pacjenta INTEGER REFERENCES Pacjenci(id_pacjenta),
     rodzaj_badania VARCHAR(50),
@@ -44,7 +44,7 @@ CREATE TABLE Wyniki_lab (
 );
 
 
-CREATE TABLE Plany_leczenia (
+**CREATE TABLE Plany_leczenia** (
     id_planu SERIAL PRIMARY KEY,
     id_pacjenta INTEGER REFERENCES Pacjenci(id_pacjenta),
     id_diagnozy INTEGER REFERENCES Diagnozy(id_diagnozy),
@@ -52,9 +52,9 @@ CREATE TABLE Plany_leczenia (
     data_rozpoczecia DATE
 );                         
 
-View definition: 
+**View definition: **
 
-CREATE VIEW Informacje_o_pacjentach AS SELECT
+**CREATE VIEW Informacje_o_pacjentach AS SELECT**
     P.id_pacjenta,
     P.imie_nazwisko,
     P.data_urodzenia,
@@ -65,9 +65,9 @@ FROM Pacjenci P
 JOIN Diagnozy D ON P.id_pacjenta = D.id_pacjenta
 JOIN Leki L ON P.id_pacjenta = L.id_pacjenta;
 
-Function definition:
+**Function definition:**
 
-CREATE OR REPLACE FUNCTION oblicz_wiek()
+**CREATE OR REPLACE FUNCTION oblicz_wiek()**
 RETURNS TRIGGER AS $$
 BEGIN
     -- Oblicz wiek na podstawie daty urodzenia
@@ -76,13 +76,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-Trigger definition:
+**Trigger definition:**
 CREATE TRIGGER trigger_oblicz_wiek
 BEFORE INSERT OR UPDATE ON Pacjenci
 FOR EACH ROW
 EXECUTE FUNCTION oblicz_wiek();                
 
-Page appearance:
+**Page appearance:**
 ![image](https://github.com/Gawendz/Medical-database-interface/assets/105167719/dfd6ed51-f6fc-4a73-a7e0-1280cb6ed799)
 
 
