@@ -82,4 +82,8 @@ BEFORE INSERT OR UPDATE ON Pacjenci
 FOR EACH ROW
 EXECUTE FUNCTION oblicz_wiek();                
 
+Page appearance:
+![image](https://github.com/Gawendz/Medical-database-interface/assets/105167719/dfd6ed51-f6fc-4a73-a7e0-1280cb6ed799)
+
+
 
