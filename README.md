@@ -66,12 +66,12 @@ JOIN Diagnozy D ON P.id_pacjenta = D.id_pacjenta
 JOIN Leki L ON P.id_pacjenta = L.id_pacjenta;
 
 Function definition:
+
 CREATE OR REPLACE FUNCTION oblicz_wiek()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Oblicz wiek na podstawie daty urodzenia
     NEW.wiek := EXTRACT(YEAR FROM AGE(CURRENT_DATE, NEW.data_urodzenia));
-
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
