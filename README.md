@@ -8,7 +8,8 @@ Entity relationship diagram:
 Relational diagram:
 ![diagram-export-28 03 2024-03_56_47](https://github.com/Gawendz/Medical-database-interface/assets/105167719/527a0cf4-001e-4385-bbeb-68407ec2f992)
 
-**Table definitions: **
+**Table definitions:**
+
 **CREATE TABLE Pacjenci** (
     id_pacjenta SERIAL PRIMARY KEY,
     imie VARCHAR(50),
@@ -83,7 +84,9 @@ FOR EACH ROW
 EXECUTE FUNCTION oblicz_wiek();                
 
 **Page appearance:**
+
 ![image](https://github.com/Gawendz/Medical-database-interface/assets/105167719/dfd6ed51-f6fc-4a73-a7e0-1280cb6ed799)
+
 
 
 
