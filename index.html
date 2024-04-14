@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfejs bazy danych</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .tab {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interfejs bazy danych</h1>
+    <!-- Zakładki dla różnych tabel -->
+    <div class="tabs">
+        <button class="tablink" onclick="openTab('pacjenci')">Pacjenci</button>
+        <button class="tablink" onclick="openTab('diagnozy')">Diagnozy</button>
+        <button class="tablink" onclick="openTab('leki')">Leki</button>
+        <button class="tablink" onclick="openTab('wyniki_lab')">Wyniki lab</button>
+        <button class="tablink" onclick="openTab('plany_leczenia')">Plany leczenia</button>
+        <button class="tablink" onclick="openTab('informacje_pacjentow')">Informacje o pacjentach</button>
+    </div>
+
+    <!-- Tablica danych dla każdej tabeli -->
+    <div id="pacjenci" class="tab">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Pacjenta</th>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Data urodzenia</th>
+                    <th>Wiek</th>
+                    <th>Adres</th>
+                    <th>Telefon</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Tutaj będą wyświetlane dane z tabeli Pacjenci -->
+            </tbody>
+        </table>
+        <button onclick="openForm('add_patient_form.html')">Dodaj pacjenta</button>
+    </div>
+    <div id="diagnozy" class="tab">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Diagnozy</th>
+                    <th>ID Pacjenta</th>
+                    <th>Stan zdrowia</th>
+                    <th>Data</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Tutaj będą wyświetlane dane z tabeli Diagnozy -->
+            </tbody>
+        </table>
+        <button onclick="openForm('add_diagnosis_form.html')">Dodaj diagnozę</button>
+    </div>
+    <div id="leki" class="tab">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Leku</th>
+                    <th>ID Pacjenta</th>
+                    <th>Nazwa leku</th>
+                    <th>Dawkowanie</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Tutaj będą wyświetlane dane z tabeli Leki -->
+            </tbody>
+        </table>
+        <button onclick="openForm('add_medication_form.html')">Dodaj lek</button>
+    </div>
+    <div id="wyniki_lab" class="tab">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Wyniku</th>
+                    <th>ID Pacjenta</th>
+                    <th>Rodzaj badania</th>
+                    <th>Wynik</th>
+                    <th>Data</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Tutaj będą wyświetlane dane z tabeli Wyniki_lab -->
+            </tbody>
+        </table>
+        <button onclick="openForm('add_lab_result_form.html')">Dodaj wynik lab</button>
+    </div>
+    <div id="plany_leczenia" class="tab">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Planu</th>
+                    <th>ID Pacjenta</th>
+                    <th>ID Diagnozy</th>
+                    <th>Zalecane leczenie</th>
+                    <th>Data rozpoczęcia</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Tutaj będą wyświetlane dane z tabeli Plany_leczenia -->
+            </tbody>
+        </table>
+        <button onclick="openForm('add_treatment_plan_form.html')">Dodaj plan leczenia</button>
+    </div>
+    
+    <div id="informacje_pacjentow" class="tab">
+    <!-- Tabela dla informacji o pacjentach -->
+        <table>
+            <thead>
+                
+            </thead>
+            <tbody>
+                <!-- Tutaj będą wyświetlane dane z widoku Informacje_o_pacjentach -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="widok">
+    	<!-- Tutaj będą wyświetlane dane z widoku Informacje_o_pacjentach -->
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        // Funkcja do pobierania danych z wszystkich tabel
+        pobierzDaneZWidokuPacjentow();
+        function pobierzDaneZeWszystkichTabel() {
+            var tabele = ['pacjenci', 'diagnozy', 'leki', 'wyniki_lab', 'plany_leczenia'];
+            tabele.forEach(function(tabela) {
+                $.ajax({
+                    url: 'get_data.php?tabela=' + tabela,
+                    method: 'GET',
+                    success: function(response) {
+                        var dane = response[tabela]; // Pobierz dane dla konkretnej tabeli
+                        $('#' + tabela + ' tbody').empty(); 
+                        if (Array.isArray(dane)) {
+                            dane.forEach(function(wiersz) {
+                                // Odwołaj się do właściwości atrybutów, zgodnie z nazwami kolumn
+                                if (tabela === 'pacjenci') {
+                                    var edycja = `<button onclick="edytujPacjenta(${wiersz.id_pacjenta})">Edytuj</button>`;
+                                    var usuwanie = `<button onclick="usunPacjenta(${wiersz.id_pacjenta})">Usuń</button>`;
+                                   
+                                    $('#' + tabela + ' tbody').append(`
+                                        <tr>
+                                            <td>${wiersz.id_pacjenta}</td>
+                                            <td>${wiersz.imie}</td>
+                                            <td>${wiersz.nazwisko}</td>
+                                            <td>${wiersz.data_urodzenia}</td>
+                                            <td>${wiersz.wiek}</td>
+                                            <td>${wiersz.adres}</td>
+                                            <td>${wiersz.telefon}</td>
+                                            <td>${edycja} ${usuwanie}</td>
+                                        </tr>
+                                    `);
+                                } else if (tabela === 'diagnozy') {
+                                    var edycja2 = `<button onclick="edytujDiagnoze(${wiersz.id_diagnozy})">Edytuj</button>`;
+                                    var usuwanie2 = `<button onclick="usunDiagnoze(${wiersz.id_diagnozy})">Usuń</button>`;
+                                    $('#' + tabela + ' tbody').append(`
+                                        <tr>
+                                            <td>${wiersz.id_diagnozy}</td>
+                                            <td>${wiersz.id_pacjenta}</td>
+                                            <td>${wiersz.stan_zdrowia}</td>
+                                            <td>${wiersz.data}</td>
+                                            <td>${edycja2} ${usuwanie2}</td>
+                                        </tr>
+                                    `);
+                                } else if (tabela === 'leki') {
+                                    var edycja3 = `<button onclick="edytujLek(${wiersz.id_leku})">Edytuj</button>`;
+                                    var usuwanie3 = `<button onclick="usunLek(${wiersz.id_leku})">Usuń</button>`;
+                                    $('#' + tabela + ' tbody').append(`
+                                        <tr>
+                                            <td>${wiersz.id_leku}</td>
+                                            <td>${wiersz.id_pacjenta}</td>
+                                            <td>${wiersz.nazwa_leku}</td>
+                                            <td>${wiersz.dawkowanie}</td>
+                                            <td>${edycja3} ${usuwanie3}</td>
+                                        </tr>
+                                    `);
+                                } else if (tabela === 'wyniki_lab') {
+                                    var edycja4 = `<button onclick="edytujWynikLab(${wiersz.id_wyniku})">Edytuj</button>`;
+                                    var usuwanie4 = `<button onclick="usunWynikLab(${wiersz.id_wyniku})">Usuń</button>`;
+                                    $('#' + tabela + ' tbody').append(`
+                                        <tr>
+                                            <td>${wiersz.id_wyniku}</td>
+                                            <td>${wiersz.id_pacjenta}</td>
+                                            <td>${wiersz.rodzaj_badania}</td>
+                                            <td>${wiersz.wynik}</td>
+                                            <td>${wiersz.data}</td>
+                                            <td>${edycja4} ${usuwanie4}</td>
+                                        </tr>
+                                    `);
+                                } else if (tabela === 'plany_leczenia') {
+                                    var edycja5 = `<button onclick="edytujPlanLeczenia(${wiersz.id_planu})">Edytuj</button>`;
+                                    var usuwanie5 = `<button onclick="usunPlanLeczenia(${wiersz.id_planu})">Usuń</button>`;
+                                    $('#' + tabela + ' tbody').append(`
+                                        <tr>
+                                            <td>${wiersz.id_planu}</td>
+                                            <td>${wiersz.id_pacjenta}</td>
+                                            <td>${wiersz.id_diagnozy}</td>
+                                            <td>${wiersz.zalecane_leczenie}</td>
+                                            <td>${wiersz.data_rozpoczecia}</td>
+                                            <td>${edycja5} ${usuwanie5}</td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        } else {
+                            console.error('Dane nie są tablicą:', dane);
+                        }
+                    }
+                });
+            });
+        }
+        
+        
+         window.edytujPacjenta = function(id) {
+            // Tutaj dodaj kod do edycji pacjenta (możesz np. przekierować użytkownika do formularza edycji)
+            window.location.href = 'edit_patient_form.html?id=' + id;
+        };
+
+        // Funkcja do usuwania pacjenta
+        window.usunPacjenta = function(id) {
+	    // Wysłanie żądania AJAX do skryptu PHP usuwającego pacjenta
+	    $.ajax({
+		url: 'delete_patient.php',
+		method: 'POST',
+		data: { id: id },
+		dataType: 'json',
+		success: function(response) {
+		    if (response.success) {
+		        // Odświeżenie danych po usunięciu pacjenta
+		        pobierzDaneZeWszystkichTabel();
+		    } else {
+		        console.error('Błąd usuwania pacjenta:', response.message);
+		    }
+		},
+		error: function(xhr, status, error) {
+		    console.error('Błąd AJAX:', error);
+		}
+	    });
+	};
+	
+	// Funkcja do edycji rekordu diagnozy
+	window.edytujDiagnoze = function(id) {
+	    // Przekierowanie użytkownika do formularza edycji rekordu
+	    window.location.href = 'edit_diagnosis_form.html?id=' + id;
+	};
+
+	// Funkcja do usuwania rekordu diagnozy
+	window.usunDiagnoze = function(id) {
+	    // Wysłanie żądania AJAX do skryptu PHP usuwającego diagnozę
+	    $.ajax({
+		url: 'delete_diagnosis.php',
+		method: 'POST',
+		data: { id: id },
+		dataType: 'json',
+		success: function(response) {
+		    if (response.success) {
+		        // Odświeżenie danych po usunięciu diagnozy
+		        pobierzDaneZeWszystkichTabel();
+		    } else {
+		        console.error('Błąd usuwania diagnozy:', response.message);
+		    }
+		},
+		error: function(xhr, status, error) {
+		    console.error('Błąd AJAX:', error);
+		}
+	    });
+	};
+
+	// Funkcja do edycji rekordu leku
+	window.edytujLek = function(id) {
+	    // Przekierowanie użytkownika do formularza edycji rekordu
+	    window.location.href = 'edit_medication_form.html?id=' + id;
+	};
+
+	// Funkcja do usuwania rekordu leku
+	window.usunLek = function(id) {
+	    // Wysłanie żądania AJAX do skryptu PHP usuwającego lek
+	    $.ajax({
+		url: 'delete_medication.php',
+		method: 'POST',
+		data: { id: id },
+		dataType: 'json',
+		success: function(response) {
+		    if (response.success) {
+		        // Odświeżenie danych po usunięciu leku
+		        pobierzDaneZeWszystkichTabel();
+		    } else {
+		        console.error('Błąd usuwania leku:', response.message);
+		    }
+		},
+		error: function(xhr, status, error) {
+		    console.error('Błąd AJAX:', error);
+		}
+	    });
+	};
+	
+	// Funkcja do edytowania rekordu wyniku lab
+	window.edytujWynikLab = function(id) {
+	    // Przekierowanie użytkownika do formularza edycji rekordu
+	    window.location.href = 'edit_lab_result_form.html?id=' + id;
+	};
+
+	// Funkcja do usuwania rekordu wyniku lab
+	window.usunWynikLab = function(id) {
+	    // Wysłanie żądania AJAX do skryptu PHP usuwającego wynik lab
+	    $.ajax({
+		url: 'delete_lab_result.php',
+		method: 'POST',
+		data: { id: id },
+		dataType: 'json',
+		success: function(response) {
+		    if (response.success) {
+		        // Odświeżenie danych po usunięciu wyniku lab
+		        pobierzDaneZeWszystkichTabel();
+		    } else {
+		        console.error('Błąd usuwania wyniku lab:', response.message);
+		    }
+		},
+		error: function(xhr, status, error) {
+		    console.error('Błąd AJAX:', error);
+		}
+	    });
+	};
+	
+	// Funkcja do edycji rekordu planu leczenia
+	window.edytujPlanLeczenia = function(id) {
+	    // Przekierowanie użytkownika do formularza edycji rekordu
+	    window.location.href = 'edit_treatment_plan_form.html?id=' + id;
+	};
+
+	// Funkcja do usuwania rekordu planu leczenia
+	window.usunPlanLeczenia = function(id) {
+	    // Wysłanie żądania AJAX do skryptu PHP usuwającego plan leczenia
+	    $.ajax({
+		url: 'delete_treatment_plan.php',
+		method: 'POST',
+		data: { id: id },
+		dataType: 'json',
+		success: function(response) {
+		    if (response.success) {
+		        // Odświeżenie danych po usunięciu planu leczenia
+		        pobierzDaneZeWszystkichTabel();
+		    } else {
+		        console.error('Błąd usuwania planu leczenia:', response.message);
+		    }
+		},
+		error: function(xhr, status, error) {
+		    console.error('Błąd AJAX:', error);
+		}
+	    });
+	};
+	
+	function pobierzDaneZWidokuPacjentow() {
+	    $.ajax({
+		url: 'get_patient_info_view.php',
+		method: 'GET',
+		dataType: 'json',
+		success: function(response) {
+		    // Wstawienie danych do elementu HTML
+		    var html = '<table>';
+		    html += '<thead><tr><th>ID Pacjenta</th><th>Imię i Nazwisko</th><th>Data urodzenia</th><th>Stan zdrowia</th><th>Nazwa leku</th><th>Dawkowanie</th></tr></thead>';
+		    html += '<tbody>';
+		    response.forEach(function(row) {
+		        html += '<tr>';
+		        html += '<td>' + row.id_pacjenta + '</td>';
+		        html += '<td>' + row.imie_nazwisko + '</td>';
+		        html += '<td>' + row.data_urodzenia + '</td>';
+		        html += '<td>' + row.stan_zdrowia + '</td>';
+		        html += '<td>' + row.nazwa_leku + '</td>';
+		        html += '<td>' + row.dawkowanie + '</td>';
+		        html += '</tr>';
+		    });
+		    html += '</tbody>';
+		    html += '</table>';
+		    $('#widok').html(html);
+		},
+		error: function(xhr, status, error) {
+		    console.error('Błąd AJAX:', error);
+		}
+	    });
+	}
+	
+	
+
+
+
+
+
+        // Funkcja do otwierania formularza dodawania rekordów dla wybranej tabeli
+        window.openForm = function(formularz) {
+            window.location.href = formularz;
+        };
+
+        // Funkcja do otwierania zakładek i pobierania danych dla wybranej tabeli
+        window.openTab = function(tabela) {
+            $('.tablink').removeClass('active');
+            $('.tab').removeClass('active');
+            $('#' + tabela).addClass('active');
+            if (tabela === 'informacje_pacjentow') {
+                pobierzDaneZWidokuPacjentow();
+                $('#widok').show();
+    	    } else {
+                pobierzDaneZeWszystkichTabel();
+                $('#widok').hide();
+   	    }
+        };
+
+        // Domyślne otwarcie pierwszej zakładki po
+        openTab('pacjenci');
+    });
+</script>
+
+
+
+	
+
+</body>
+</html>
+
