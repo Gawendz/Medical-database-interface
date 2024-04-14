@@ -87,7 +87,7 @@ EXECUTE FUNCTION oblicz_wiek();
 
 ![image](https://github.com/Gawendz/Medical-database-interface/assets/105167719/dfd6ed51-f6fc-4a73-a7e0-1280cb6ed799)
 
-![image](https://github.com/Gawendz/Medical-database-interface/assets/105167719/1d90500b-45c7-4ee6-911b-f1f39abcea76)
+
 
 
 
