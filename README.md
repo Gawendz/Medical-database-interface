@@ -2,11 +2,11 @@
 A database storing information about patients and their diagnoses, medications, test results and treatment plans. 
 Data is stored in a PostgreSQL database, and the user interface is implemented in HTML/CSS/JavaScript using jQuery to handle client-side interactions.
 
-Entity relationship diagram:
+**Entity relationship diagram:**
 ![image (3)](https://github.com/Gawendz/Medical-database-interface/assets/105167719/c782243a-0418-4c1f-9572-033194940d67)
 
 
-Relational diagram:
+**Relational diagram:**
 ![diagram-export-28 03 2024-03_56_47](https://github.com/Gawendz/Medical-database-interface/assets/105167719/527a0cf4-001e-4385-bbeb-68407ec2f992)
 
 **Table definitions:**
